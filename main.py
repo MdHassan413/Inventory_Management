@@ -1,6 +1,3 @@
-#======================================================import libraries=======================================================================#
-
-
 from tkinter import * 
 from tkinter import ttk
 import mysql.connector
@@ -10,26 +7,21 @@ from tkinter import filedialog
 class window1:
     def __init__(self,root):
         self.root=root
-        self.root.geometry("1160x480")
+        self.root.geometry("1160x418")
         self.root.title("Mobile Number System")
-        self.root.config(bg='black') 
+        self.root.config(bg='White') 
         self.product_id=StringVar()
         self.product_name=StringVar()
         self.sell_price=IntVar()
         self.quantity=IntVar()
-        
-        self.insertdesign()
-#=========================================================pagedesign======================================================================================#
-    
+        self.insertdesign()    
+
     def insertdesign(self):
-        
-        bgc="coral1"
-        #================================Insert Frame1 for insert data==============================================================#
-        
-        self.title=Label(self.root,text="Inventory Management System",bd=12,relief=GROOVE,fg="Blue",bg='white',font=("times new roman",20,"bold"),pady=2).place(x=0,y=0,height=60,width=1160)
+
+        bgc="white"        
+ 
         self.f1=LabelFrame(self.root,bd=7,relief=GROOVE,text="Inventory Management",font=("times new roman",15,"bold"),fg="Blue",bg='White')
-        self.f1.place(x=0,y=70,width=350,height=400)
-       
+        self.f1.place(x=0,y=10,width=350,height=400)  
 
         self.lab1=Label(self.f1,text="Product Id",font=("times new roman",15,"bold"),fg="black").grid(row=2,column=3)
         self.txt1=Entry(self.f1,width=15,text="id",font=("times new roman",15,"bold"),bd=5,relief=SUNKEN,textvariable=self.product_id).grid( row=2, column=5,padx=10,pady=10)
@@ -40,16 +32,14 @@ class window1:
         self.lab2=Label(self.f1,text="Quantity",font=("times new roman",15,"bold"),fg="black").grid(row=8,column=3,padx=10,pady=10)
         self.txt2=Entry(self.f1,width=15,text="quantity",font=("times new roman",15,"bold"),bd=5,relief=SUNKEN,textvariable=self.quantity).grid( row=8, column=5,padx=10,pady=10)
 
-        button1=Button(self.f1,text="Insert",bg="brown",fg="white",pady=5,width=8,font="arial 10 bold",command=self.getdata).place(x=40,y=250)
-        button2=Button(self.f1,text="Show",bg="brown",fg="white",pady=5,width=8,font="arial 10 bold",command=self.showdata).place(x=130,y=250)
-        button3=Button(self.f1,text="clear",bg="brown",fg="white",pady=5,width=8,font="arial 10 bold",command=self.cleardata).place(x=220,y=250)
+        button1=Button(self.f1,text="Insert",bg="blue",fg="white",pady=5,width=8,font="arial 10 bold",command=self.getdata).place(x=40,y=250)
+        button2=Button(self.f1,text="Show",bg="blue",fg="white",pady=5,width=8,font="arial 10 bold",command=self.showdata).place(x=130,y=250)
+        button3=Button(self.f1,text="clear",bg="blue",fg="white",pady=5,width=8,font="arial 10 bold",command=self.cleardata).place(x=220,y=250)
         
         self.f2=LabelFrame(self.root,bd=10,relief=GROOVE,text="Product List",font=("times new roman",15,"bold"),fg="Blue",bg='white')
-        self.f2.place(x=360,y=70,width=800,height=400)
+        self.f2.place(x=360,y=10,width=800,height=400)
         verscroll=ttk.Scrollbar(self.f2,orient=VERTICAL)
-        
-        #==================================================Treeview and scrollbar==========================================================#
-        
+                
         self.txttt=ttk.Treeview(self.f2,columns=('Product id','Name','Selling Price','Quantity'),yscrollcommand=verscroll.set)
         self.txttt.heading("Product id",text="Product Id")
         self.txttt.heading("Name",text="Name")
@@ -63,8 +53,6 @@ class window1:
         verscroll.pack(side=RIGHT,fill=Y)
         verscroll.config(command=self.txttt.yview)
         self.txttt.pack(fill=BOTH,expand=1)
-
-#==========================================================Insert Data===================================================================#     
         
     def getdata(self):
         id=self.product_id.get()
@@ -88,14 +76,12 @@ class window1:
                 messagebox.showinfo("Success","Insert Data Susscessfull")
                 self.product_id.set("")
                 self.product_name.set("")
-                self.sell_price.set(0)
-                self.quantity.set(0)
+                self.sell_price.set()
+                self.quantity.set()
                 
             except Error as e:
                 messagebox.showerror("Error","Product Id already exist")
             
-
-#=======================================================showdata=================================================================#
     def showdata(self):
         
             connection=mysql.connector.connect(user="root",password="",host="localhost",database="inventorysys")
@@ -106,14 +92,14 @@ class window1:
             result=cursor.fetchall()   
             for i in result:
                 self.txttt.insert("",END,values=i)
-#====================================================Clear feild data=============================================================#
+
     def cleardata(self):
             for row in self.txttt.get_children():
                 self.txttt.delete(row)
             self.product_id.set("")
             self.product_name.set("")
-            self.sell_price.set(0)
-            self.quantity.set(0)
+            self.sell_price.set()
+            self.quantity.set()
 
 
 root=Tk()
